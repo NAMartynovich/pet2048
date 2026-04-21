@@ -3,8 +3,8 @@
 /****************************************/
 
 #include <iostream>
-#include <vector>
 #include <string>
+#include "2048.h"
 
 int main()
 {
