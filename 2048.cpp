@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <string>
-#include "2048.h"
+#include "include/2048.h"
 
 int main()
 {
