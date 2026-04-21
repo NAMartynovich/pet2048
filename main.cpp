@@ -1,3 +1,7 @@
+/****************************************/
+/*Autor: Nikolay Martynovich(nike@bk.ru)*/
+/****************************************/
+
 #include <iostream>
 #include <vector>
 #include <string>
