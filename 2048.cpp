@@ -8,6 +8,8 @@
 
 int main()
 {
-  std::cout << "Geme 2048!" << std::endl;
+  std::cout << "Game 2048!" << std::endl;
+  Game2048 game;
+  std::cout << game << std::endl;
   return 0;
 }
