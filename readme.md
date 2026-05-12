@@ -1,1 +1,1 @@
-Pet prjekt game 2048
+Pet projekt game 2048
