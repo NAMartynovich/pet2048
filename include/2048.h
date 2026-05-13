@@ -35,15 +35,18 @@ private:
     {
       for (size_t j = 0; j != SIZE; ++j)
       {
-        if (board[i][j] == 0 && count == 0)
-        {
-          board[i][j] = arr[std::rand() % 10];
-        }
-        else if (board[i][j] == 0)
+        if (board[i][j] == 0)
         {
           --count;
         }
+        if (count == 0)
+        {
+          board[i][j] = arr[std::rand() % 10];
+          break;
+        }
       }
+      if (count == 0)
+        break;
     }
   }
 
