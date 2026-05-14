@@ -12,11 +12,13 @@ private:
   const int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};
   std::vector<int> board[SIZE] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
   int score = 0;
+
   void random_space(int &i, int &j)
   {
     i = std::rand() % 4;
     j = std::rand() % 4;
   }
+
   void add_rand_num()
   {
     int count = 0;
@@ -41,13 +43,43 @@ private:
         }
         if (count == 0)
         {
-          board[i][j] = arr[std::rand() % 10];
+          if (board[i][j] == 0)
+            board[i][j] = arr[std::rand() % 10];
           break;
         }
       }
       if (count == 0)
         break;
     }
+  }
+
+  void reverse()
+  {
+    for (size_t i = 0; i < SIZE; ++i)
+    {
+      std::swap(board[i][0], board[i][SIZE - 1]);
+      std::swap(board[i][1], board[i][SIZE - 2]);
+    }
+  }
+
+  void transparent()
+  {
+    std::swap(board[0][1], board[1][0]);
+    std::swap(board[0][2], board[2][0]);
+    std::swap(board[0][3], board[3][0]);
+    std::swap(board[1][2], board[2][1]);
+    std::swap(board[1][3], board[3][1]);
+    std::swap(board[2][3], board[3][2]);
+  }
+
+  void transparent2()
+  {
+    std::swap(board[0][0], board[3][3]);
+    std::swap(board[0][1], board[2][3]);
+    std::swap(board[0][2], board[1][3]);
+    std::swap(board[1][0], board[3][2]);
+    std::swap(board[1][1], board[2][2]);
+    std::swap(board[2][0], board[3][1]);
   }
 
 public:
@@ -105,14 +137,23 @@ public:
 
   void move_right()
   {
+    reverse();
+    move_left();
+    reverse();
   }
 
   void move_up()
   {
+    transparent();
+    move_left();
+    transparent();
   }
 
   void move_down()
   {
+    transparent2();
+    move_left();
+    transparent2();
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Game2048 &game)
