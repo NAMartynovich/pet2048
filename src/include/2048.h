@@ -156,6 +156,11 @@ public:
     transparent2();
   }
 
+  int Get(int i, int j)
+  {
+    return board[i][j];
+  }
+
   friend std::ostream &operator<<(std::ostream &os, const Game2048 &game)
   {
     for (size_t i = 0; i < SIZE; ++i)
