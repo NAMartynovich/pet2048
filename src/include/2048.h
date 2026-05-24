@@ -12,6 +12,7 @@ private:
   const int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};
   std::vector<int> board[SIZE] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
   int score = 0;
+  bool endGame = false;
 
   void random_space(int &i, int &j)
   {
@@ -32,24 +33,44 @@ private:
         }
       }
     }
-    count = std::rand() % count;
-    for (size_t i = 0; i != SIZE; ++i)
+    if (count == 0)
     {
-      for (size_t j = 0; j != SIZE; ++j)
+      endGame = true;
+    }
+    if (count == 1)
+    {
+      for (size_t i = 0; i != SIZE; ++i)
       {
-        if (board[i][j] == 0)
-        {
-          --count;
-        }
-        if (count == 0)
+        for (size_t j = 0; j != SIZE; ++j)
         {
           if (board[i][j] == 0)
+          {
             board[i][j] = arr[std::rand() % 10];
-          break;
+          }
         }
       }
-      if (count == 0)
-        break;
+    }
+    else
+    {
+      count = std::rand() % count;
+      for (size_t i = 0; i != SIZE; ++i)
+      {
+        for (size_t j = 0; j != SIZE; ++j)
+        {
+          if (board[i][j] == 0)
+          {
+            --count;
+          }
+          if (count == 0)
+          {
+            if (board[i][j] == 0)
+              board[i][j] = arr[std::rand() % 10];
+            break;
+          }
+        }
+        if (count == 0)
+          break;
+      }
     }
   }
 
@@ -156,9 +177,19 @@ public:
     transparent2();
   }
 
-  int Get(int i, int j)
+  const int Get(int i, int j) const
   {
-    return board[i][j];
+    return board[j][i];
+  }
+
+  const int getScore() const
+  {
+    return score;
+  }
+
+  const bool getStateGame() const
+  {
+    return !endGame;
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Game2048 &game)

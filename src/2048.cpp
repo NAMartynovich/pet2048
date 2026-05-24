@@ -18,36 +18,39 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
       {
         // --- Square shape (SFML 3.1 style) ---
         // Create a rectangle with a given size
-        square[(i + 1) * (j + 1) - 1].setSize({100.f, 100.f});
-        square[(i + 1) * (j + 1) - 1].setFillColor(sf::Color(100, 150, 250)); // Light blue
-        square[(i + 1) * (j + 1) - 1].setOutlineColor(sf::Color::Black);
-        square[(i + 1) * (j + 1) - 1].setOutlineThickness(3.f);
-        square[(i + 1) * (j + 1) - 1].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
+        square[i * 4 + j].setSize({100.f, 100.f});
+        square[i * 4 + j].setFillColor(sf::Color(100, 150, 250)); // Light blue
+        square[i * 4 + j].setOutlineColor(sf::Color::Black);
+        square[i * 4 + j].setOutlineThickness(3.f);
+        square[i * 4 + j].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
 
         // --- Text (inscription) ---
 
         // Create a text object (SFML 3.1 style)
         // text[(i + 1) * (j + 1) - 1].setFont(font);
-        text[(i + 1) * (j + 1) - 1].setString(std::to_string(game.Get(i, j)));
-        text[(i + 1) * (j + 1) - 1].setCharacterSize(80);
-        text[(i + 1) * (j + 1) - 1].setFillColor(sf::Color::Black);
-        text[(i + 1) * (j + 1) - 1].setStyle(sf::Text::Style::Bold);
+        text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
+        text[i * 4 + j].setCharacterSize(80);
+        text[i * 4 + j].setFillColor(sf::Color::Black);
+        text[i * 4 + j].setStyle(sf::Text::Style::Bold);
 
         // Center the text inside the square
-        sf::FloatRect textBounds = text[(i + 1) * (j + 1) - 1].getLocalBounds();
+        sf::FloatRect textBounds = text[i * 4 + j].getLocalBounds();
         auto textSize = textBounds.size;
         textSize.x /= 2.0f;
         textSize.y /= 1.1f;
-        text[(i + 1) * (j + 1) - 1].setPosition(square[(i + 1) * (j + 1) - 1].getPosition() +
-                                                square[(i + 1) * (j + 1) - 1].getGeometricCenter() - textSize);
+        text[i * 4 + j].setPosition(square[i * 4 + j].getPosition() +
+                                    square[i * 4 + j].getGeometricCenter() - textSize);
       }
       else
       {
-        square[(i + 1) * (j + 1) - 1].setSize({100.f, 100.f});
-        square[(i + 1) * (j + 1) - 1].setFillColor(sf::Color::White); // Light blue
-        square[(i + 1) * (j + 1) - 1].setOutlineColor(sf::Color::Black);
-        square[(i + 1) * (j + 1) - 1].setOutlineThickness(3.f);
-        square[(i + 1) * (j + 1) - 1].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
+        square[i * 4 + j].setSize({100.f, 100.f});
+        square[i * 4 + j].setFillColor(sf::Color::White); // Light blue
+        square[i * 4 + j].setOutlineColor(sf::Color::Black);
+        square[i * 4 + j].setOutlineThickness(3.f);
+        square[i * 4 + j].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
+        text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
+        text[i * 4 + j].setCharacterSize(80);
+        text[i * 4 + j].setFillColor(sf::Color::White);
       }
     }
   }
@@ -57,7 +60,7 @@ int main()
 {
   Game2048 game;
   // Create the window with SFML 3.1's new VideoMode syntax
-  sf::RenderWindow window(sf::VideoMode({406, 406}), "Game 2048");
+  sf::RenderWindow window(sf::VideoMode({406, 430}), "Game 2048");
   window.setFramerateLimit(60);
 
   sf::Font font;
@@ -68,7 +71,13 @@ int main()
     return -1;
   }
 
-  std::vector<sf::RectangleShape> square(16);
+  sf::Text score(font, (L"Очки: " + std::to_wstring(game.getScore())), 24);
+  score.setPosition({10.0f, 406.0f});
+  score.setFillColor(sf::Color::Blue);
+  score.setStyle(sf::Text::Bold);
+
+  std::vector<sf::RectangleShape>
+      square(16);
   std::vector<sf::Text> text;
   text.reserve(16); // резервируем память для 16 элементов
   for (int i = 0; i < 16; ++i)
@@ -93,53 +102,42 @@ int main()
         {
           game.move_left();
           print(game, square, text);
+          score.setString(L"Очки: " + std::to_wstring(game.getScore()));
+        }
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::D)
+        {
+          game.move_right();
+          print(game, square, text);
+          score.setString(L"Очки: " + std::to_wstring(game.getScore()));
+        }
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::W)
+        {
+          game.move_up();
+          print(game, square, text);
+          score.setString(L"Очки: " + std::to_wstring(game.getScore()));
+        }
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::S)
+        {
+          game.move_down();
+          print(game, square, text);
+          score.setString(L"Очки: " + std::to_wstring(game.getScore()));
         }
       }
     }
 
     window.clear(sf::Color::White);
+    window.draw(score);
     for (size_t i = 0; i < SIZE; ++i)
     {
       for (size_t j = 0; j < SIZE; ++j)
       {
         if (game.Get(i, j) > 0)
         {
-          window.draw(square[(i + 1) * (j + 1) - 1]);
-          window.draw(text[(i + 1) * (j + 1) - 1]);
+          window.draw(square[i * 4 + j]);
+          window.draw(text[i * 4 + j]);
         }
       }
     }
     window.display();
   }
 }
-/*int main()
-{
-  std::cout << "Game 2048!" << std::endl;
-  Game2048 game;
-  std::cout << game << std::endl;
-  std::cout << "Нажмите w, a, s, d или q для выхода" << std::endl;
-  char c;
-  while ((c = std::getchar()) != 'q')
-  {
-    switch (c)
-    {
-    case 'w':
-      game.move_up();
-      std::cout << game << std::endl;
-      break;
-    case 'a':
-      game.move_left();
-      std::cout << game << std::endl;
-      break;
-    case 's':
-      game.move_down();
-      std::cout << game << std::endl;
-      break;
-    case 'd':
-      game.move_right();
-      std::cout << game << std::endl;
-      break;
-    }
-  }
-  return 0;
-}*/
