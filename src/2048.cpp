@@ -22,14 +22,25 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
         square[i * 4 + j].setFillColor(sf::Color(100, 150, 250)); // Light blue
         square[i * 4 + j].setOutlineColor(sf::Color::Black);
         square[i * 4 + j].setOutlineThickness(3.f);
-        square[i * 4 + j].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
+        square[i * 4 + j].setPosition({i * 100.f + 3.f * i + 3.f, j * 100.f + 3.f * j + 3.f}); // Position of top-left corner
 
         // --- Text (inscription) ---
 
         // Create a text object (SFML 3.1 style)
         // text[(i + 1) * (j + 1) - 1].setFont(font);
         text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
-        text[i * 4 + j].setCharacterSize(80);
+        if (game.Get(i, j) > 64)
+        {
+          text[i * 4 + j].setCharacterSize(50);
+        }
+        else if (game.Get(i, j) > 512)
+        {
+          text[i * 4 + j].setCharacterSize(24);
+        }
+        else
+        {
+          text[i * 4 + j].setCharacterSize(80);
+        }
         text[i * 4 + j].setFillColor(sf::Color::Black);
         text[i * 4 + j].setStyle(sf::Text::Style::Bold);
 
@@ -41,17 +52,6 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
         text[i * 4 + j].setPosition(square[i * 4 + j].getPosition() +
                                     square[i * 4 + j].getGeometricCenter() - textSize);
       }
-      else
-      {
-        square[i * 4 + j].setSize({100.f, 100.f});
-        square[i * 4 + j].setFillColor(sf::Color::White); // Light blue
-        square[i * 4 + j].setOutlineColor(sf::Color::Black);
-        square[i * 4 + j].setOutlineThickness(3.f);
-        square[i * 4 + j].setPosition({i * 100.f + 3.f, j * 100.f + 3.f}); // Position of top-left corner
-        text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
-        text[i * 4 + j].setCharacterSize(80);
-        text[i * 4 + j].setFillColor(sf::Color::White);
-      }
     }
   }
 }
@@ -60,7 +60,7 @@ int main()
 {
   Game2048 game;
   // Create the window with SFML 3.1's new VideoMode syntax
-  sf::RenderWindow window(sf::VideoMode({406, 430}), "Game 2048");
+  sf::RenderWindow window(sf::VideoMode({412, 436}), "Game 2048");
   window.setFramerateLimit(60);
 
   sf::Font font;
@@ -72,7 +72,7 @@ int main()
   }
 
   sf::Text score(font, (L"Очки: " + std::to_wstring(game.getScore())), 24);
-  score.setPosition({10.0f, 406.0f});
+  score.setPosition({15.0f, 412.0f});
   score.setFillColor(sf::Color::Blue);
   score.setStyle(sf::Text::Bold);
 
@@ -98,25 +98,25 @@ int main()
       {
         if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
           window.close();
-        else if (keyPressed->scancode == sf::Keyboard::Scancode::A)
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::A || keyPressed->scancode == sf::Keyboard::Scancode::Left)
         {
           game.move_left();
           print(game, square, text);
           score.setString(L"Очки: " + std::to_wstring(game.getScore()));
         }
-        else if (keyPressed->scancode == sf::Keyboard::Scancode::D)
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::D || keyPressed->scancode == sf::Keyboard::Scancode::Right)
         {
           game.move_right();
           print(game, square, text);
           score.setString(L"Очки: " + std::to_wstring(game.getScore()));
         }
-        else if (keyPressed->scancode == sf::Keyboard::Scancode::W)
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::W || keyPressed->scancode == sf::Keyboard::Scancode::Up)
         {
           game.move_up();
           print(game, square, text);
           score.setString(L"Очки: " + std::to_wstring(game.getScore()));
         }
-        else if (keyPressed->scancode == sf::Keyboard::Scancode::S)
+        else if (keyPressed->scancode == sf::Keyboard::Scancode::S || keyPressed->scancode == sf::Keyboard::Scancode::Down)
         {
           game.move_down();
           print(game, square, text);

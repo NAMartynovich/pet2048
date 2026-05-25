@@ -36,6 +36,7 @@ private:
     if (count == 0)
     {
       endGame = true;
+      return;
     }
     if (count == 1)
     {
@@ -113,10 +114,19 @@ public:
     random_space(i, j);
     board[i][j] = 4;
   }
-  // Определить случайное пустое место
 
   void move_left()
   {
+    bool is_step = false;
+    for (size_t i = 0; i != SIZE; ++i)
+    {
+      if (board[i][0] == 0 && (board[i][1] != 0 || board[i][2] != 0 || board[i][3] != 0))
+        is_step = true;
+      if (board[i][1] == 0 && (board[i][2] != 0 || board[i][3] != 0))
+        is_step = true;
+      if (board[i][2] == 0 && board[i][3] != 0)
+        is_step = true;
+    }
     for (size_t i = 0; i < SIZE; ++i)
     {
       auto j = board[i].begin();
@@ -138,6 +148,7 @@ public:
         {
           if (*j > 0 && *j == *(j + 1))
           {
+            is_step = true;
             *j += *(j + 1);
             score += *j;
             board[i].erase(j + 1);
@@ -153,7 +164,8 @@ public:
         board[i].push_back(0);
       }
     }
-    add_rand_num();
+    if (is_step)
+      add_rand_num();
   }
 
   void move_right()
