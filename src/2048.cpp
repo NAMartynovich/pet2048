@@ -60,7 +60,7 @@ int main()
 {
   Game2048 game;
   // Create the window with SFML 3.1's new VideoMode syntax
-  sf::RenderWindow window(sf::VideoMode({412, 436}), "Game 2048");
+  sf::RenderWindow window(sf::VideoMode({415, 442}), "Game 2048");
   window.setFramerateLimit(60);
 
   sf::Font font;
@@ -72,7 +72,7 @@ int main()
   }
 
   sf::Text score(font, (L"Очки: " + std::to_wstring(game.getScore())), 24);
-  score.setPosition({15.0f, 412.0f});
+  score.setPosition({15.0f, 415.0f});
   score.setFillColor(sf::Color::Blue);
   score.setStyle(sf::Text::Bold);
 
@@ -98,6 +98,11 @@ int main()
       {
         if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
           window.close();
+        else if (game.getStateGame())
+        {
+          game.initGame();
+          print(game, square, text);
+        }
         else if (keyPressed->scancode == sf::Keyboard::Scancode::A || keyPressed->scancode == sf::Keyboard::Scancode::Left)
         {
           game.move_left();
@@ -125,6 +130,11 @@ int main()
       }
     }
 
+    sf::Text endGame(font, L"Конец игры!", 70);
+    endGame.setPosition({10.0f, 200.0f});
+    endGame.setFillColor(sf::Color::Red);
+    endGame.setStyle(sf::Text::Bold);
+
     window.clear(sf::Color::White);
     window.draw(score);
     for (size_t i = 0; i < SIZE; ++i)
@@ -137,6 +147,10 @@ int main()
           window.draw(text[i * 4 + j]);
         }
       }
+    }
+    if (game.getStateGame())
+    {
+      window.draw(endGame);
     }
     window.display();
   }

@@ -36,6 +36,23 @@ private:
     if (count == 0)
     {
       endGame = true;
+      for (size_t i = 0; i != SIZE; ++i)
+      {
+        for (size_t j = 0; j != SIZE - 1; ++j)
+        {
+          if (i < 3)
+          {
+            if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j])
+            {
+              endGame = false;
+            }
+            else if (board[i][j] == board[i][j + 1])
+            {
+              endGame = false;
+            }
+          }
+        }
+      }
       return;
     }
     if (count == 1)
@@ -108,6 +125,23 @@ public:
   Game2048()
   {
     int i, j;
+    std::srand(std::time(nullptr));
+    random_space(i, j);
+    board[i][j] = 2;
+    random_space(i, j);
+    board[i][j] = 4;
+  }
+
+  void initGame()
+  {
+    int i, j;
+    for (size_t i = 0; i != SIZE; ++i)
+    {
+      for (size_t j = 0; j != SIZE; ++j)
+      {
+        board[i][j] = 0;
+      }
+    }
     std::srand(std::time(nullptr));
     random_space(i, j);
     board[i][j] = 2;
@@ -201,7 +235,7 @@ public:
 
   const bool getStateGame() const
   {
-    return !endGame;
+    return endGame;
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Game2048 &game)
