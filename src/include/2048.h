@@ -12,7 +12,7 @@ private:
   const int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};
   std::vector<int> board[SIZE] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
   int score = 0;
-  bool endGame = false;
+  // bool endGame = false;
 
   void random_space(int &i, int &j)
   {
@@ -32,28 +32,6 @@ private:
           ++count;
         }
       }
-    }
-    if (count == 0)
-    {
-      endGame = true;
-      for (size_t i = 0; i != SIZE; ++i)
-      {
-        for (size_t j = 0; j != SIZE - 1; ++j)
-        {
-          if (i < 3)
-          {
-            if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j])
-            {
-              endGame = false;
-            }
-            else if (board[i][j] == board[i][j + 1])
-            {
-              endGame = false;
-            }
-          }
-        }
-      }
-      return;
     }
     if (count == 1)
     {
@@ -235,7 +213,50 @@ public:
 
   const bool getStateGame() const
   {
-    return endGame;
+    int count = 0;
+    bool endG = false;
+    for (size_t i = 0; i != SIZE; ++i)
+    {
+      for (size_t j = 0; j != SIZE; ++j)
+      {
+        if (board[i][j] == 0)
+        {
+          ++count;
+        }
+      }
+    }
+    if (count == 0)
+    {
+      endG = true;
+      for (size_t i = 0; i != SIZE; ++i)
+      {
+        for (size_t j = 0; j != SIZE; ++j)
+        {
+          if (i < 3 && j < 3)
+          {
+            if (board[i][j] == board[i][j + 1] || board[i][j] == board[i + 1][j])
+            {
+              endG = false;
+            }
+          }
+          else if (j == 3 && i < 3)
+          {
+            if (board[i][j] == board[i + 1][j])
+            {
+              endG = false;
+            }
+          }
+          else if (i == 3 && j < 3)
+          {
+            if (board[i][j] == board[i][j + 1])
+            {
+              endG = false;
+            }
+          }
+        }
+      }
+    }
+    return endG;
   }
 
   friend std::ostream &operator<<(std::ostream &os, const Game2048 &game)
