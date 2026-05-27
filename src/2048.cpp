@@ -29,13 +29,13 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
         // Create a text object (SFML 3.1 style)
         // text[(i + 1) * (j + 1) - 1].setFont(font);
         text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
-        if (game.Get(i, j) > 64)
+        if (game.Get(i, j) > 512)
+        {
+          text[i * 4 + j].setCharacterSize(40);
+        }
+        else if (game.Get(i, j) > 64)
         {
           text[i * 4 + j].setCharacterSize(50);
-        }
-        else if (game.Get(i, j) > 512)
-        {
-          text[i * 4 + j].setCharacterSize(24);
         }
         else
         {
