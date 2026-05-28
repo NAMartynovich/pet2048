@@ -12,7 +12,6 @@ private:
   const int arr[10] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 4};
   std::vector<int> board[SIZE] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
   int score = 0;
-  // bool endGame = false;
 
   void random_space(int &i, int &j)
   {

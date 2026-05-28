@@ -16,18 +16,63 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
     {
       if (game.Get(i, j) > 0)
       {
-        // --- Square shape (SFML 3.1 style) ---
-        // Create a rectangle with a given size
+        text[i * 4 + j].setFillColor(sf::Color::White);
+        if (game.Get(i, j) == 2)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(235, 228, 220));
+          text[i * 4 + j].setFillColor(sf::Color(116, 110, 102));
+        }
+        if (game.Get(i, j) == 4)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(234, 225, 205));
+          text[i * 4 + j].setFillColor(sf::Color(116, 110, 102));
+        }
+        if (game.Get(i, j) == 8)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(226, 181, 129));
+        }
+        if (game.Get(i, j) == 16)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(223, 155, 107));
+        }
+        if (game.Get(i, j) == 32)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(219, 131, 100));
+        }
+        if (game.Get(i, j) == 64)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(217, 106, 69));
+        }
+        if (game.Get(i, j) == 128)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(227, 209, 126));
+        }
+        if (game.Get(i, j) == 256)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(227, 206, 113));
+        }
+        if (game.Get(i, j) == 512)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(227, 203, 100));
+        }
+        if (game.Get(i, j) == 1024)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(225, 199, 87));
+        }
+        if (game.Get(i, j) == 2048)
+        {
+          square[i * 4 + j].setFillColor(sf::Color(224, 195, 77));
+        }
+        if (game.Get(i, j) > 2048)
+        {
+          square[i * 4 + j].setFillColor(sf::Color::Black);
+        }
         square[i * 4 + j].setSize({100.f, 100.f});
-        square[i * 4 + j].setFillColor(sf::Color(100, 150, 250)); // Light blue
+        // square[i * 4 + j].setFillColor(sf::Color(188, 231, 84)); // Light blue
         square[i * 4 + j].setOutlineColor(sf::Color::Black);
         square[i * 4 + j].setOutlineThickness(3.f);
         square[i * 4 + j].setPosition({i * 100.f + 3.f * i + 3.f, j * 100.f + 3.f * j + 3.f}); // Position of top-left corner
 
-        // --- Text (inscription) ---
-
-        // Create a text object (SFML 3.1 style)
-        // text[(i + 1) * (j + 1) - 1].setFont(font);
         text[i * 4 + j].setString(std::to_string(game.Get(i, j)));
         if (game.Get(i, j) > 512)
         {
@@ -41,7 +86,7 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
         {
           text[i * 4 + j].setCharacterSize(80);
         }
-        text[i * 4 + j].setFillColor(sf::Color::Black);
+        // text[i * 4 + j].setFillColor(sf::Color::Black);
         text[i * 4 + j].setStyle(sf::Text::Style::Bold);
 
         // Center the text inside the square
