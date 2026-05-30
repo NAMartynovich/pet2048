@@ -97,6 +97,13 @@ void print(Game2048 &game, std::vector<sf::RectangleShape> &square, std::vector<
         text[i * 4 + j].setPosition(square[i * 4 + j].getPosition() +
                                     square[i * 4 + j].getGeometricCenter() - textSize);
       }
+      else
+      {
+        square[i * 4 + j].setFillColor(sf::Color::White);
+        square[i * 4 + j].setOutlineColor(sf::Color::Black);
+        square[i * 4 + j].setOutlineThickness(3.f);
+        square[i * 4 + j].setPosition({i * 100.f + 3.f * i + 3.f, j * 100.f + 3.f * j + 3.f});
+      }
     }
   }
 }
@@ -186,9 +193,9 @@ int main()
     {
       for (size_t j = 0; j < SIZE; ++j)
       {
+        window.draw(square[i * 4 + j]);
         if (game.Get(i, j) > 0)
         {
-          window.draw(square[i * 4 + j]);
           window.draw(text[i * 4 + j]);
         }
       }

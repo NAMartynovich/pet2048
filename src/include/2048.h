@@ -32,6 +32,7 @@ private:
         }
       }
     }
+    // std::cout << "Count: " << count << std::endl;
     if (count == 1)
     {
       for (size_t i = 0; i != SIZE; ++i)
@@ -47,24 +48,29 @@ private:
     }
     else
     {
-      count = std::rand() % count;
+      int count1 = std::rand() % count;
+      bool f = false;
+      count = 0;
+      // std::cout << "Rand count: " << count1 << std::endl;
       for (size_t i = 0; i != SIZE; ++i)
       {
         for (size_t j = 0; j != SIZE; ++j)
         {
-          if (board[i][j] == 0)
+          if (count1 == 0 && board[i][j] == 0)
           {
-            --count;
-          }
-          if (count == 0)
-          {
-            if (board[i][j] == 0)
-              board[i][j] = arr[std::rand() % 10];
+            board[i][j] = arr[std::rand() % 10];
+            f = true;
             break;
           }
+          else if (board[i][j] == 0)
+          {
+            --count1;
+          }
         }
-        if (count == 0)
+        if (f)
+        {
           break;
+        }
       }
     }
   }
